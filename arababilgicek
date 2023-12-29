@@ -1,0 +1,41 @@
+from selenium import webdriver #selenium websitesi kontrolü kütüphenesini ekleme
+from selenium.webdriver.chrome.service import Service #tarayıcımızı kullanabilmek için driverini projemize import ettiğimiz selenium kütühpanesi
+
+service = Service("./msedgedriver.exe") #microsoft edgenin driverini projeye dahil ettik
+tarayici = webdriver.Edge(service=service)
+
+tarayici.get("https://www.arabam.com/") #ilgili sayfaya geçişi sağladık
+tarayici.maximize_window() #tarayıcı tam ekrana aldık
+
+cookies = tarayici.find_element_by_id("onetrust-accept-btn-handler") #çerezleri 
+cookies.click()
+
+#ilgilendiğimiz arabanın ismini yazdırdık
+input = tarayici.find_element_by_xpath('//*[@id="wrapper"]/header/div[3]/div/div/div[1]/div/div/input').send_keys("togg")
+
+find = tarayici.find_element_by_xpath("//*[@id='wrapper']/header/div[3]/div/div/div[1]/div/button") #arama butonunun konumunu bildirdik
+find.click() #butona tıkladı
+
+baslik = tarayici.current_url #gittiğimiz sayfada olduğumuzu seleniuma bildirdik
+
+tarayici.execute_script("window.scrollBy(0,1000)","") #bulmak istediğimiz arabayı bulabilmek için aşağı kaydırdık
+
+ilan = tarayici.find_element_by_xpath('//*[@id="listing23983279"]/td[3]/a').click() #ilgili aracın ilanına eriştik
+
+price = tarayici.find_element_by_xpath('//*[@id="wrapper"]/div[2]/div[3]/div/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]').text #fiyat bilgisi
+güc = tarayici.find_element_by_xpath('//*[@id="wrapper"]/div[2]/div[3]/div/div[1]/div[2]/div[2]/div[2]/div[13]/div[2]').text #aracın gücü hakkında bilgi
+vites = tarayici.find_element_by_xpath('//*[@id="wrapper"]/div[2]/div[3]/div/div[1]/div[2]/div[2]/div[2]/div[8]/div[2]').text #vites türü
+
+
+print("Aracın fiyatı: " + price)
+print("Aracın gücü: " + güc)
+print("Araç otomatik mi: ")
+if vites in "Otomatik": #eğer otomatikse evet manuelse hayır yazılacak.
+    print("Evet.")
+else:
+    print("Hayır.")
+
+
+
+
+
